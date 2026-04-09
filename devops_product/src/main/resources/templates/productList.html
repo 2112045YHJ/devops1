@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>상품 목록</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>상품 목록</h2>
+
+    <!-- 상품 등록 폼으로 이동하는 버튼 또는 링크 추가 -->
+    <div style="margin-bottom: 10px;">
+        <a href="/product/productForm"
+            style="display: inline-block; padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">상품
+            등록</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>상품 이미지</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>수량</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 상품 목록 출력 -->
+            <tr th:each="product : ${list}">
+                <td th:text="${product.num}">번호</td>
+                <td>
+                    <img th:if="${product.storedFilePath != null}" th:src="${product.storedFilePath}" width="100"
+                        height="auto">
+                    <span th:unless="${product.storedFilePath != null}">N/A</span>
+                </td>
+                <td>
+                    <a th:href="@{/product/productDetail(num=${product.num})}" th:text="${product.name}"
+                        style="text-decoration: none; color: #007bb5; font-weight: bold;">상품명</a>
+                </td>
+                <!-- 가격을 3자리마다 콤마를 찍어 출력 -->
+                <td th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + ' 원'">가격</td>
+                <td th:text="${product.amount}">수량</td>
+            </tr>
+            <!-- 등록된 상품이 없는 경우 -->
+            <tr th:if="${list == null or list.isEmpty()}">
+                <td colspan="4">등록된 상품 정보가 없습니다.</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

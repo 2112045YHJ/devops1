@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org..DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cloud.mapper.ProductMapper">
+	<select id="productList" resultType="org.cloud.dto.ProductDTO">
+		<![CDATA[
+			select 
+				num,name,price,amount, stored_file_path
+			from 
+				product
+			order by num desc;
+		]]>
+	</select>
+	
+	<insert id="insertProduct">
+		<![CDATA[
+			insert into product(name,price,amount,stored_file_path) values(#{name},#{price},#{amount}, #{storedFilePath})
+		]]>
+	</insert>
+	
+	<select id="productDetail" resultType="org.cloud.dto.ProductDTO" parameterType="int">
+		<![CDATA[
+			select 
+				num, name, price, amount, stored_file_path
+			from 
+				product
+			where
+				num = #{num}
+		]]>
+	</select>
+
+	<update id="updateProduct">
+		update product
+		set name = #{name}, price = #{price}, amount = #{amount}
+		<if test="storedFilePath != null">
+			, stored_file_path = #{storedFilePath}
+		</if>
+		where num = #{num}
+	</update>
+
+	<delete id="deleteProduct" parameterType="int">
+		<![CDATA[
+			delete from product
+			where num = #{num}
+		]]>
+	</delete>
+</mapper>

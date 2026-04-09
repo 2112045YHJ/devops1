@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>상품 수정</title>
+    <style>
+        .form-container {
+            width: 300px;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>상품 정보 수정</h2>
+
+    <div class="form-container">
+        <form action="/product/modify" method="post" enctype="multipart/form-data">
+            <!-- 기존 상품의 num 값을 전달하기 위한 hidden 태그 -->
+            <input type="hidden" name="num" th:value="${product.num}" />
+
+            <div class="form-group">
+                <label for="name">상품명</label>
+                <input type="text" id="name" name="name" th:value="${product.name}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price">가격 (원)</label>
+                <input type="number" id="price" name="price" th:value="${product.price}" required min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="amount">수량</label>
+                <input type="number" id="amount" name="amount" th:value="${product.amount}" required min="1">
+            </div>
+
+            <div class="form-group" th:if="${product.storedFilePath != null}">
+                <label>현재 이미지</label>
+                <img th:src="${product.storedFilePath}" width="150" height="auto"
+                    style="display:block; margin-bottom: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="file">이미지 수정 (새 이미지 선택 시 변경됨)</label>
+                <input type="file" id="file" name="file">
+            </div>
+
+            <button type="submit" class="btn-submit">수정하기</button>
+        </form>
+    </div>
+
+    <br>
+    <a th:href="@{/product/productDetail(num=${product.num})}">상세 정보로 돌아가기</a>
+    <br><br>
+    <a href="/product/list">목록으로 돌아가기</a>
+
+</body>
+
+</html>
